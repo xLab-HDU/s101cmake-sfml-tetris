@@ -1,7 +1,5 @@
 #include "Game.h"
 
-
-
 Game::Game()
     :tTiles(), tBackground(), tButtons(), tSwitcher(), tFrame(), tCover(), tScore(), tGameOver(),
     sTiles(tTiles), sBackground(tBackground), sButtons(tButtons), sSwitcher(tSwitcher), sFrame(tFrame), sCover(tCover), sScore(tScore), sGameOver(tGameOver),
@@ -94,7 +92,7 @@ void Game::LoadMediaData()
     sSwitcher.setTexture(tSwitcher, true);
     sSwitcher.setOrigin({ static_cast<float>(sSwitcher.getLocalBounds().size.x / 2.0),static_cast<float> (sSwitcher.getLocalBounds().size.y / 2.0) });
 
-    if (!font.openFromFile("../data/fonts/方正粗黑宋简体.ttf"))//选择字体，SFML不能直接访问系统的字体，特殊的字体，需要自己加载
+    if (!font.openFromFile(L"../data/Fonts/font.ttf"))//选择字体，SFML不能直接访问系统的字体，特殊的字体，需要自己加载
     {
         std::cout << "字体没有找到" << std::endl;
     }

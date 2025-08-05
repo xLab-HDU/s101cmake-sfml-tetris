@@ -321,8 +321,10 @@ void Tetris::xMove()
     for (int i = 0; i < 4; i++)
     {
         tempSquare[i] = currentSquare[i];
-        currentSquare[i].x += dx;
+        currentSquare[i].x += dx;        
     }
+    dx = 0;
+    
     if (!hitTest()) //如果撞上了
         for (int i = 0; i < 4; i++)
             currentSquare[i] = tempSquare[i];//到左右的边界，不能移出边界

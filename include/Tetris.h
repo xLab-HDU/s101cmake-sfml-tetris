@@ -9,10 +9,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-// #include <windows.h>
 #include <iostream>
 #include <sstream>
-#include "Tetris.h"
+
 #define  GRIDSIZE 35
 #define  STAGE_WIDTH	10
 #define  STAGE_HEIGHT	20

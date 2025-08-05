@@ -1,6 +1,8 @@
 # CMake SFML Tetris
 This repository is a Tetris game implemented in C++ using SFML, built with CMake. 
 
+[![Build Status](https://github.com/xLab-HDU/cmake-sfml-tetris/actions/workflows/ci.yml/badge.svg)](https://github.com/xLab-HDU/cmake-sfml-tetris/actions)
+
 ## How to Use
 
 ```sh
