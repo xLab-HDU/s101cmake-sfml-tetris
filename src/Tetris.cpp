@@ -19,10 +19,10 @@ void Tetris::Initial(Texture* tex, RenderWindow* w)
     tTiles = *tex;	//将方块的纹理传给Tetris对象
     dx = 0; //X方向偏移量
     score = 0;
-    gameOver = false;
-    rotate = false; //是否旋转
-    hold = false;	//是否有hold块图形
-    hardDrop = false; //是否硬降
+    isGameOver = false;
+    isRotate = false; //是否旋转
+    isHold = false;	//是否有hold块图形
+    isHardDrop = false; //是否硬降
     newShapeFlag = false; //初始化时候做第一次生成，后面有条件控制生成
     animationFlag = true; //动画开启,由游戏是否开始决定
     animationCtrlValue = 1.0;
@@ -85,7 +85,7 @@ void Tetris::Input(const std::optional<sf::Event>& event)
         {
             if (keyPressed->scancode == sf::Keyboard::Scancode::W)
                 if (currentShapeNum != shapeO)
-                    rotate = true;
+                    isRotate = true;
             if (keyPressed->scancode == sf::Keyboard::Scancode::A)
                 dx = -1;
             else if (keyPressed->scancode == sf::Keyboard::Scancode::D)
@@ -96,9 +96,9 @@ void Tetris::Input(const std::optional<sf::Event>& event)
         if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
         {
             if (keyReleased->scancode == sf::Keyboard::Scancode::Space)
-                hardDrop = true;
+                isHardDrop = true;
             if (keyReleased->scancode == sf::Keyboard::Scancode::LControl)
-                hold = true;
+                isHold = true;
             if (keyReleased->scancode == sf::Keyboard::Scancode::A || keyReleased->scancode == sf::Keyboard::Scancode::D)
                 dx = 0; //水平移动
             if (keyReleased->scancode == sf::Keyboard::Scancode::S)
@@ -112,7 +112,7 @@ void Tetris::Input(const std::optional<sf::Event>& event)
         {
             if (keyPressed->scancode == sf::Keyboard::Scancode::Up)
                 if (currentShapeNum != shapeO)
-                    rotate = true;
+                    isRotate = true;
             if (keyPressed->scancode == sf::Keyboard::Scancode::Left)
                 dx = -1;
             else if (keyPressed->scancode == sf::Keyboard::Scancode::Right)
@@ -123,9 +123,9 @@ void Tetris::Input(const std::optional<sf::Event>& event)
         if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>())
         {
             if (keyReleased->scancode == sf::Keyboard::Scancode::Enter)
-                hardDrop = true;
+                isHardDrop = true;
             if (keyReleased->scancode == sf::Keyboard::Scancode::RControl)
-                hold = true;
+                isHold = true;
             if (keyReleased->scancode == sf::Keyboard::Scancode::Left || keyReleased->scancode == sf::Keyboard::Scancode::Right)
                 dx = 0; //水平移动
             if (keyReleased->scancode == sf::Keyboard::Scancode::Down)
@@ -138,19 +138,19 @@ void Tetris::Input(const std::optional<sf::Event>& event)
 void Tetris::traditonLogic()
 {
     //hold方块图形
-    if (hold)
+    if (isHold)
     {
         holdFunc();
-        hold = false;
+        isHold = false;
     }
     //// <- 水平Move -> ///
     xMove();
 
     //////Rotate//////
-    if (rotate)
+    if (isRotate)
     {
         rotateFunc();
-        rotate = false;
+        isRotate = false;
     }
 
     slowLoading();
@@ -163,10 +163,10 @@ void Tetris::traditonLogic()
 
     shadow();
 
-    if (hardDrop)
+    if (isHardDrop)
     {
         hardDropFunc();
-        hardDrop = false;
+        isHardDrop = false;
     }
 }
 void Tetris::Logic()
@@ -180,7 +180,7 @@ void Tetris::Logic()
         {
             ///////check lines//////////
             checkLine();
-            if (gameOver == false && animationFlag == false)
+            if (isGameOver == false && animationFlag == false)
                 newShapeFunc();//落地应该就要生成新的方块;  图形生成函数里面再更新Flag的状态
             isWin();
         }
@@ -209,12 +209,11 @@ void Tetris::isWin()
     for (int i = 0; i < FIELD_WIDTH; i++)
     {
         if (Field[4][i])
-            gameOver = true;
+            isGameOver = true;
     }
 }
 void Tetris::Draw()
 {
-    //window = w;
     if (animationFlag == false)//动画管控
     {
         //绘制Shadow的方块
@@ -321,10 +320,10 @@ void Tetris::xMove()
     for (int i = 0; i < 4; i++)
     {
         tempSquare[i] = currentSquare[i];
-        currentSquare[i].x += dx;        
+        currentSquare[i].x += dx;
     }
     dx = 0;
-    
+
     if (!hitTest()) //如果撞上了
         for (int i = 0; i < 4; i++)
             currentSquare[i] = tempSquare[i];//到左右的边界，不能移出边界

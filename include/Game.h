@@ -37,7 +37,7 @@ public:
 	//工程的Tetris类，差不多是一个俄罗斯方块的小游戏。因为是双打的俄罗斯方块嘛^_^
 	//Game类被作为游戏运行的平台，负责衔接Tetris类和操作系统
 	Tetris player1, player2;
-	bool gameOver, gameQuit;
+	bool isGameOver, isGameQuit;
 	Clock clock;
 	unsigned int Window_width, Window_height;
 	int stageWidth, stageHeight;

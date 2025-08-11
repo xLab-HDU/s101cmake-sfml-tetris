@@ -32,8 +32,8 @@ void Game::gameInitial()
 
     isGameBegin = false;
     isGameHold = false;
-    gameOver = false;
-    gameQuit = false;
+    isGameOver = false;
+    isGameQuit = false;
     //	ButtonState_Start = Start_Dark;
     ButtonState_Hold = Hold_Dark;
     player1.role = rolePLAYER1;		//定义Tetris对象为player1
@@ -96,7 +96,7 @@ void Game::LoadMediaData()
     {
         std::cout << "字体没有找到" << std::endl;
     }
-    text.setFont(font);
+
 }
 void Game::TextOut()
 {
@@ -184,14 +184,14 @@ void Game::gameInput()
         if (event->is<sf::Event::Closed>())
         {
             window.close();		//窗口可以移动、调整大小和最小化。但是如果要关闭，需要自己去调用close()函数
-            gameQuit = true;
+            isGameQuit = true;
         }
         if (const auto* KeyReleased = event->getIf<sf::Event::KeyReleased>())
         {
             if (KeyReleased->scancode == sf::Keyboard::Scancode::Escape)
             {
                 window.close();  //窗口可以移动、调整大小和最小化。但是如果要关闭，需要自己去调用close()函数
-                gameQuit = true;
+                isGameQuit = true;
             }
         }
 
@@ -277,14 +277,14 @@ void Game::gameOverInput()
         if (event->is<sf::Event::Closed>())
         {
             window.close();		//窗口可以移动、调整大小和最小化。但是如果要关闭，需要自己去调用close()函数
-            gameQuit = true;
+            isGameQuit = true;
         }
         if (const auto* KeyReleased = event->getIf<sf::Event::KeyReleased>())
         {
             if (KeyReleased->scancode == sf::Keyboard::Scancode::Escape)
             {
                 window.close();  //窗口可以移动、调整大小和最小化。但是如果要关闭，需要自己去调用close()函数
-                gameQuit = true;
+                isGameQuit = true;
             }
         }
         if (const auto* mouseButtonReleased = event->getIf<sf::Event::MouseButtonReleased>())
@@ -292,19 +292,19 @@ void Game::gameOverInput()
             if (mouseButtonReleased->button == sf::Mouse::Button::Left)
             {
                 if (ButtonRectStart.contains({ mouseButtonReleased->position.x, mouseButtonReleased->position.y }))
-                // if (ButtonRectStart.contains(Mouse::getPosition(window)))
+                    // if (ButtonRectStart.contains(Mouse::getPosition(window)))
                 {
-                    gameOver = false;
+                    isGameOver = false;
                 }
             }
         }
         if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
         {
             if (ButtonRectStart.contains({ mouseMoved->position.x, mouseMoved->position.y }))
-        //    if (ButtonRectStart.contains(Mouse::getPosition(window)))
-				ButtonState_Start = Close_Light;
-			else
-				ButtonState_Start = Close_Dark;
+                //    if (ButtonRectStart.contains(Mouse::getPosition(window)))
+                ButtonState_Start = Close_Light;
+            else
+                ButtonState_Start = Close_Dark;
         }
     }
 }
@@ -360,13 +360,13 @@ void Game::DrawResults()
     ButtonWidth = 250;// sGameOver.getLocalBounds().width / 2;
     ButtonHeight = sGameOver.getLocalBounds().size.y;
 
-    if (player1.gameOver || player2.gameOver)
+    if (player1.isGameOver || player2.isGameOver)
     {
-        sGameOver.setTextureRect(IntRect({ player1.gameOver * ButtonWidth, 0 }, { ButtonWidth, ButtonHeight }));//读取按钮的纹理区域
+        sGameOver.setTextureRect(IntRect({ player1.isGameOver * ButtonWidth, 0 }, { ButtonWidth, ButtonHeight }));//读取按钮的纹理区域
         sGameOver.setPosition({ static_cast<float>(P1_STAGE_CORNER_X + GRIDSIZE * 1.5), 0.0 });								//设置按钮的位置坐标
         window.draw(sGameOver);
 
-        sGameOver.setTextureRect(IntRect({ player2.gameOver * ButtonWidth, 0 }, { ButtonWidth, ButtonHeight }));//读取按钮的纹理区域
+        sGameOver.setTextureRect(IntRect({ player2.isGameOver * ButtonWidth, 0 }, { ButtonWidth, ButtonHeight }));//读取按钮的纹理区域
         sGameOver.setPosition({ static_cast<float>(P2_STAGE_CORNER_X + GRIDSIZE * 1.5), 0.0 });								//设置按钮的位置坐标
         window.draw(sGameOver);
     }
@@ -382,7 +382,7 @@ void Game::gameLogic()
 
     player1.Logic();
     player2.Logic();
-    	gameOver = (player1.gameOver || player2.gameOver);
+    isGameOver = (player1.isGameOver || player2.isGameOver);
 }
 void Game::gameDraw()
 {
@@ -413,7 +413,7 @@ void Game::gameRun()
 
         gameInitial();
 
-        while (window.isOpen() && gameOver == false)
+        while (window.isOpen() && isGameOver == false)
         {
             gameInput();
 
@@ -424,10 +424,10 @@ void Game::gameRun()
 
             gameDraw();
         }
-        while(window.isOpen() && gameOver == true)
+        while (window.isOpen() && isGameOver == true)
         {
             gameOverInput();
             gameDraw();
         }
-    } while (!gameQuit);
+    } while (!isGameQuit);
 }

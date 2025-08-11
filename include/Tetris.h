@@ -88,8 +88,8 @@ public:
 		2,3,4,5, // O
 	};
 	int dx, score;
-	bool rotate, hold, hardDrop, newShapeFlag, animationFlag;
-	bool gameOver;
+	bool isRotate, isHold, isHardDrop, newShapeFlag, animationFlag;
+	bool isGameOver;
 	int animationRow[4];
 	float animationCtrlValue;
 	int colorNum, nextcolorNum, tempcolorNum;// holdcolorNum
